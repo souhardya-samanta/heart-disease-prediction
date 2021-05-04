@@ -4,8 +4,7 @@
 # #Importing packages
 
 # In[11]:
-
-
+import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -98,8 +97,7 @@ cm
 # 52	1	0	125	212	0	1	168	0	1.0	2	2	3	(Test Input) 
 flag = 0
 while flag == 0:
-    lst = list(map(float, input("Enter [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal] Respectively: ").split()))
-    if len(lst) == 13:
+      lst=list(sys.argv[1].split())
       flag = 1
 nplst = np.array(lst)
 y_pred1 = classifier.predict(nplst.reshape(1,len(nplst)))
