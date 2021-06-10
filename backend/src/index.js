@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
 app.post("/predict", async (req, res) => {
   var dataToSend;
   const val = req?.body?.readings;
-  console.log("Readings",val)
   const readings = val?.join(" ");
   const childPython = spawn("python", ["pred.py", readings],{
     cwd: __dirname
