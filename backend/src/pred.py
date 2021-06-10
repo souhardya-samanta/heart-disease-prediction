@@ -23,7 +23,7 @@ ds.head()
 
 
 # # splitting into dependent and independent variables
-# 
+#
 
 # In[13]:
 
@@ -94,7 +94,7 @@ cm
 # In[ ]:
 
 
-# 52	1	0	125	212	0	1	168	0	1.0	2	2	3	(Test Input) 
+# 52	1	0	125	212	0	1	168	0	1.0	2	2	3	(Test Input)
 flag = 0
 while flag == 0:
       lst=list(sys.argv[1].split())

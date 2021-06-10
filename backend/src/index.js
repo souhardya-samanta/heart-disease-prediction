@@ -6,7 +6,7 @@ const { spawn } = require("child_process");
 
 app.use(express.json());
 
-app.listen(port, () => {
+app.listen(port,() => {
   console.log("Server is up on port " + port);
 });
 
@@ -16,10 +16,11 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/predict", async (req, res) => {
+app.post("/predict", async (req, res) => {
   var dataToSend;
-  const val = req.body.readings;
-  const readings = val.join(" ");
+  const val = req?.body?.readings;
+  console.log("Readings",val)
+  const readings = val?.join(" ");
   const childPython = spawn("python", ["pred.py", readings],{
     cwd: __dirname
   });
