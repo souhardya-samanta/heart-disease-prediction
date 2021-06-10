@@ -12,6 +12,11 @@ export const Predict = () => {
   const [slope, setSlope] = React.useState(0);
   const [fluoro, setFluoro] = React.useState(0);
   const [thal, setThal] = React.useState(0);
+  const [age, setAge] = React.useState('');
+  const [restBp, setRestBp] = React.useState('');
+  const [serum, setSerum] = React.useState('');
+  const [maxHr, setMaxHr] = React.useState('');
+  const [old, setOld] = React.useState('');
   return (
     <View style={styles.main}>
       <KeyboardAwareScrollView
@@ -26,7 +31,14 @@ export const Predict = () => {
           </Text>
         </Card>
         <View style={styles.smallGap} />
-        <TextInput mode="outlined" style={styles.textInput} label="Age" />
+        <TextInput
+          mode="outlined"
+          style={styles.textInput}
+          label="Age"
+          keyboardType={'numeric'}
+          value={age}
+          onChangeText={v => setAge(v)}
+        />
         <View style={styles.smallGap} />
         <Card style={styles.otherCard}>
           <Text style={styles.headText}>Sex</Text>
@@ -73,12 +85,18 @@ export const Predict = () => {
           style={styles.textInput}
           label="Resting BP"
           placeholder="mmHg"
+          keyboardType={'numeric'}
+          value={restBp}
+          onChangeText={v => setRestBp(v)}
         />
         <TextInput
           mode="outlined"
           style={styles.textInput}
           label="Serum Cholesterol level"
           placeholder="mm/dL"
+          keyboardType={'numeric'}
+          value={serum}
+          onChangeText={v => setSerum(v)}
         />
         <View style={styles.smallGap} />
         <Card style={styles.otherCard}>
@@ -125,6 +143,9 @@ export const Predict = () => {
           mode="outlined"
           style={styles.textInput}
           label="Max. Heart Rate"
+          keyboardType={'numeric'}
+          value={maxHr}
+          onChangeText={v => setMaxHr(v)}
         />
         <View style={styles.smallGap} />
         <Card style={styles.otherCard}>
@@ -148,6 +169,9 @@ export const Predict = () => {
           style={styles.textInput}
           label="Oldpeak"
           placeholder="ST depression induced by exercise relative to rest"
+          keyboardType={'numeric'}
+          value={old}
+          onChangeText={v => setOld(v)}
         />
         <View style={styles.smallGap} />
         <Card style={styles.otherCard}>
@@ -209,7 +233,33 @@ export const Predict = () => {
           </RadioButton.Group>
         </Card>
       </KeyboardAwareScrollView>
-      <Button style={styles.button} mode="contained">
+      <Button
+        disabled={
+          !age.trim() ||
+          !restBp.trim() ||
+          !serum.trim() ||
+          !maxHr.trim() ||
+          !old.trim()
+        }
+        style={styles.button}
+        mode="contained"
+        onPress={() =>
+          console.log([
+            parseFloat(age),
+            parseFloat(sex),
+            parseFloat(chestPain),
+            parseFloat(restBp),
+            parseFloat(serum),
+            parseFloat(fastBp),
+            parseFloat(recg),
+            parseFloat(maxHr),
+            parseFloat(exAngia),
+            parseFloat(old),
+            parseFloat(slope),
+            parseFloat(fluoro),
+            parseFloat(thal),
+          ])
+        }>
         SUBMIT
       </Button>
     </View>
