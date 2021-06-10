@@ -1,6 +1,15 @@
 import React from 'react';
+import axios from 'axios';
 import {View, Text, StyleSheet} from 'react-native';
-import {Card, TextInput, RadioButton, Button} from 'react-native-paper';
+import {
+  Card,
+  TextInput,
+  RadioButton,
+  Button,
+  Dialog,
+  Portal,
+  ActivityIndicator,
+} from 'react-native-paper';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Slider from '@react-native-community/slider';
 export const Predict = () => {
@@ -17,6 +26,42 @@ export const Predict = () => {
   const [serum, setSerum] = React.useState('');
   const [maxHr, setMaxHr] = React.useState('');
   const [old, setOld] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [res, setRes] = React.useState('');
+  const Pred = async () => {
+    try {
+      setOpen(true);
+      setLoading(true);
+      await axios({
+        method: 'post',
+        url: 'http://192.168.0.131:3000/predict',
+        data: {
+          readings: [
+            parseFloat(age),
+            sex,
+            chestPain,
+            parseFloat(restBp),
+            parseFloat(serum),
+            fastBp,
+            recg,
+            parseFloat(maxHr),
+            exAngia,
+            parseFloat(old),
+            slope,
+            fluoro,
+            thal,
+          ],
+        },
+      }).then(function (response) {
+        setRes(response.data.res);
+      });
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <View style={styles.main}>
       <KeyboardAwareScrollView
@@ -243,25 +288,31 @@ export const Predict = () => {
         }
         style={styles.button}
         mode="contained"
-        onPress={() =>
-          console.log([
-            parseFloat(age),
-            parseFloat(sex),
-            parseFloat(chestPain),
-            parseFloat(restBp),
-            parseFloat(serum),
-            parseFloat(fastBp),
-            parseFloat(recg),
-            parseFloat(maxHr),
-            parseFloat(exAngia),
-            parseFloat(old),
-            parseFloat(slope),
-            parseFloat(fluoro),
-            parseFloat(thal),
-          ])
-        }>
+        onPress={Pred}>
         SUBMIT
       </Button>
+      <Portal>
+        <Dialog visible={open} dismissable={false}>
+          <Dialog.Content>
+            {loading ? (
+              <ActivityIndicator animating={true} color="#6400EE" />
+            ) : (
+              <Text>{res}</Text>
+            )}
+          </Dialog.Content>
+          {res ? (
+            <Dialog.Actions>
+              <Button
+                onPress={() => {
+                  setOpen(false);
+                  setRes('');
+                }}>
+                Done
+              </Button>
+            </Dialog.Actions>
+          ) : null}
+        </Dialog>
+      </Portal>
     </View>
   );
 };
